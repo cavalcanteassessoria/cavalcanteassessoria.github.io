@@ -1,0 +1,248 @@
+---
+import { getImage } from 'astro:assets';
+import { nav, site } from '../data/site';
+import { ui } from './ui-copy';
+import Icon from './Icon.astro';
+import libraryImage from '../assets/img/biblioteca.jpg';
+
+const label = nav.find((item) => item.href === '#contato')?.label ?? '';
+const background = await getImage({ src: libraryImage, width: 1600, format: 'webp', quality: 70 });
+---
+
+<section
+  id="contato"
+  class="contact surface-dark grain"
+  aria-labelledby="contato-title"
+  style={`--bg: url(${background.src})`}
+>
+  <div class="container">
+    <h2 id="contato-title" class="folio">
+      <span class="folio__num" aria-hidden="true">§ 04</span>
+      <span>{label}</span>
+    </h2>
+
+    <div class="contact__grid">
+      <div class="contact__main reveal">
+        <p class="contact__title">{ui.contactTitle}</p>
+        <a class="contact__phone" href={`tel:${site.phone.tel}`}>
+          <span class="visually-hidden">{ui.contactPhone}:{" "}</span>
+          {site.phone.display}
+        </a>
+        <div class="contact__actions">
+          <a class="btn" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+            <Icon name="whatsapp" />
+            {ui.whatsappCta}
+            <span class="visually-hidden">{ui.newTab}</span>
+          </a>
+        </div>
+      </div>
+
+      <dl class="contact__list reveal">
+        <div class="contact__row">
+          <dt>
+            <Icon name="mail" />
+            <span>{ui.contactEmail}</span>
+          </dt>
+          <dd>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </dd>
+        </div>
+        <div class="contact__row">
+          <dt>
+            <Icon name="instagram" />
+            <span>{ui.contactInstagram}</span>
+          </dt>
+          <dd>
+            <a href={site.instagram.url} target="_blank" rel="noopener noreferrer">
+              {site.instagram.handle}
+              <span class="visually-hidden">{ui.newTab}</span>
+            </a>
+          </dd>
+        </div>
+        <div class="contact__row">
+          <dt>
+            <Icon name="pin" />
+            <span>{ui.contactLocation}</span>
+          </dt>
+          <dd>
+            {site.location}
+            <span class="contact__note">{ui.contactCoverage}</span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <aside class="minibook reveal" aria-labelledby="minibook-title">
+      <Icon name="book" class="minibook__icon" />
+      <div class="minibook__text">
+        <p class="eyebrow minibook__label">{ui.miniBookLabel}</p>
+        <h3 id="minibook-title" class="minibook__title">{ui.miniBookTitle}</h3>
+        <p class="minibook__body">{ui.miniBookBody}</p>
+      </div>
+      <a class="btn btn--ghost minibook__cta" href={site.miniBook} target="_blank" rel="noopener noreferrer">
+        {ui.miniBookCta}
+        <span class="visually-hidden">{ui.newTab}</span>
+        <Icon name="arrow-up-right" class="icon--arrow" />
+      </a>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    padding-block: var(--section-y);
+    background:
+      linear-gradient(180deg, var(--ink) 0%, rgb(11 10 9 / 0.88) 30%, rgb(11 10 9 / 0.9) 70%, var(--ink) 100%),
+      var(--bg) center / cover no-repeat,
+      var(--ink);
+  }
+
+  .contact__grid {
+    display: grid;
+    gap: 3.5rem;
+  }
+
+  .contact__title {
+    max-width: 14ch;
+    font-family: var(--serif);
+    font-size: clamp(2.3rem, 1.5rem + 3.6vw, 4.5rem);
+    line-height: 1;
+    color: var(--text-dark);
+  }
+
+  .contact__phone {
+    display: inline-block;
+    margin-top: 2rem;
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 1.4rem + 2vw, 3rem);
+    line-height: 1;
+    text-decoration: none;
+    color: var(--bronze);
+    background: linear-gradient(currentColor, currentColor) left bottom / 100% 1px no-repeat;
+    padding-bottom: 0.4rem;
+    transition: background-size 0.5s var(--ease);
+  }
+
+  .contact__phone:hover {
+    background-size: 30% 1px;
+  }
+
+  .contact__actions {
+    margin-top: 2.5rem;
+  }
+
+  .contact__list {
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .contact__row {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line-dark-soft);
+  }
+
+  .contact__row dt {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+
+  .contact__row dt :global(.icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .contact__row dd {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);
+    color: var(--text-dark);
+    overflow-wrap: anywhere;
+  }
+
+  .contact__row dd a {
+    text-decoration: none;
+    background: linear-gradient(var(--bronze), var(--bronze)) left bottom / 0 1px no-repeat;
+    transition: background-size 0.5s var(--ease);
+  }
+
+  .contact__row dd a:hover {
+    background-size: 100% 1px;
+  }
+
+  .contact__note {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted-dark);
+  }
+
+  .minibook {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: clamp(4rem, 9vw, 7rem);
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border: 1px solid var(--line-dark);
+    background: rgb(0 0 0 / 0.45);
+    position: relative;
+  }
+
+  .minibook::before {
+    content: '';
+    position: absolute;
+    inset: 0.5rem;
+    border: 1px solid var(--line-dark-soft);
+    pointer-events: none;
+  }
+
+  .minibook :global(.minibook__icon) {
+    width: 3rem;
+    height: 3rem;
+    color: var(--bronze);
+  }
+
+  .minibook__label {
+    color: var(--bronze);
+  }
+
+  .minibook__title {
+    margin-top: 0.5rem;
+    font-size: clamp(1.9rem, 1.5rem + 1.4vw, 2.6rem);
+  }
+
+  .minibook__body {
+    margin-top: 0.6rem;
+    max-width: 48ch;
+    color: var(--muted-dark);
+  }
+
+  .minibook__cta {
+    position: relative;
+    justify-self: start;
+  }
+
+  @media (min-width: 64em) {
+    .contact__grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: clamp(4rem, 8vw, 8rem);
+      align-items: end;
+    }
+
+    .minibook {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .minibook__cta {
+      justify-self: end;
+    }
+  }
+</style>

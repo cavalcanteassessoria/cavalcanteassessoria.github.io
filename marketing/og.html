@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>OG</title>
+    <style>
+      @font-face {
+        font-family: 'Abhaya Libre';
+        src: url('../node_modules/@fontsource/abhaya-libre/files/abhaya-libre-latin-800-normal.woff2') format('woff2');
+        font-weight: 800;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Abhaya Libre';
+        src: url('../node_modules/@fontsource/abhaya-libre/files/abhaya-libre-latin-500-normal.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Libre Franklin';
+        src: url('../node_modules/@fontsource/libre-franklin/files/libre-franklin-latin-500-normal.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Libre Franklin';
+        src: url('../node_modules/@fontsource/libre-franklin/files/libre-franklin-latin-400-normal.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      :root {
+        --bronze: #b4816b;
+        --ink: #0a0908;
+        --unit: 1px;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body { width: 100%; height: 100%; overflow: hidden; }
+
+      body {
+        font-family: 'Libre Franklin', sans-serif;
+        background: var(--ink);
+        color: #fff;
+        position: relative;
+      }
+
+      .photo {
+        position: absolute;
+        inset: 0;
+        background: url('../src/assets/img/justica-estatueta.jpg') center 30% / cover no-repeat;
+        filter: saturate(0.85) contrast(1.05);
+      }
+
+      .veil {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(100deg, #0a0908 0%, #0a0908f2 34%, #0a0908b0 55%, #0a090840 78%, #0a090825 100%),
+          radial-gradient(120% 90% at 85% 15%, #b4816b30 0%, #b4816b00 55%);
+      }
+
+      .frame {
+        position: absolute;
+        inset: 28px;
+        border: 1px solid #b4816b59;
+      }
+
+      .content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 74px 8% 108px 7%;
+        gap: 24px;
+      }
+
+      .eyebrow {
+        font-size: 17px;
+        font-weight: 500;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: var(--bronze);
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .eyebrow::before {
+        content: '';
+        width: 54px;
+        height: 1px;
+        background: var(--bronze);
+        flex: none;
+      }
+
+      h1 {
+        font-family: 'Abhaya Libre', serif;
+        font-weight: 800;
+        font-size: 108px;
+        line-height: 0.92;
+        letter-spacing: -0.02em;
+      }
+
+      h1 em {
+        display: block;
+        font-family: 'Libre Franklin', sans-serif;
+        font-size: 21px;
+        font-weight: 500;
+        font-style: normal;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: #ffffffc7;
+        margin-top: 20px;
+      }
+
+      .claim {
+        font-family: 'Abhaya Libre', serif;
+        font-weight: 500;
+        font-size: 40px;
+        line-height: 1.22;
+        color: #fffffff2;
+        max-width: 15em;
+      }
+
+      .rules {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 4px;
+      }
+
+      .rule {
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: #ffffffb3;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .rule::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border: 1px solid var(--bronze);
+        transform: rotate(45deg);
+        flex: none;
+      }
+
+      .foot {
+        position: absolute;
+        left: 7%;
+        bottom: 52px;
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        font-size: 18px;
+        letter-spacing: 0.05em;
+        color: #ffffff8c;
+      }
+
+      .foot b {
+        color: var(--bronze);
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-size: 16px;
+      }
+
+      .foot span { padding-left: 26px; border-left: 1px solid #ffffff26; }
+
+      /* ---------- story / square variants ---------- */
+      body[data-kind='square'] .content { padding: 0 9% 104px 9%; gap: 20px; }
+      body[data-kind='square'] h1 { font-size: 96px; }
+      body[data-kind='square'] .claim { font-size: 36px; max-width: 12em; }
+      body[data-kind='square'] .frame { inset: 24px; }
+
+      body[data-kind='story'] .veil {
+        background:
+          linear-gradient(180deg, #0a0908b8 0%, #0a090855 38%, #0a0908e8 72%, #0a0908 100%),
+          radial-gradient(90% 45% at 50% 8%, #b4816b2e 0%, #b4816b00 60%);
+      }
+      body[data-kind='story'] .content {
+        justify-content: flex-end;
+        padding: 0 9% 300px;
+        gap: 30px;
+      }
+      body[data-kind='story'] .photo { background-position: center 20%; }
+      body[data-kind='story'] h1 { font-size: 132px; }
+      body[data-kind='story'] h1 em { font-size: 26px; margin-top: 26px; }
+      body[data-kind='story'] .claim { font-size: 52px; max-width: 13em; }
+      body[data-kind='story'] .rule { font-size: 25px; }
+      body[data-kind='story'] .eyebrow { font-size: 22px; }
+      body[data-kind='story'] .foot {
+        left: 9%;
+        bottom: 96px;
+        font-size: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      body[data-kind='story'] .foot span { padding-left: 0; border-left: 0; }
+      body[data-kind='story'] .frame { inset: 34px; }
+    </style>
+  </head>
+  <body data-kind="og">
+    <div class="photo"></div>
+    <div class="veil"></div>
+    <div class="frame"></div>
+
+    <div class="content">
+      <p class="eyebrow">Perícia documentoscópica</p>
+      <h1>
+        Cavalcante
+        <em>Assessoria Jurídica</em>
+      </h1>
+      <p class="claim">Laudo grafotécnico e documentoscópico que resiste ao contraditório.</p>
+      <div class="rules">
+        <p class="rule">Perícia judicial e extrajudicial</p>
+        <p class="rule">Assistência técnica e impugnação de laudo</p>
+        <p class="rule">Cálculos previdenciários, cíveis e trabalhistas</p>
+      </div>
+    </div>
+
+    <div class="foot">
+      <b>cavalcanteassessoria.github.io</b>
+      <span>(61) 99000-1494</span>
+      <span>Brasília — DF</span>
+    </div>
+
+    <script>
+      const kind = new URLSearchParams(location.search).get('kind');
+      if (kind) document.body.dataset.kind = kind;
+    </script>
+  </body>
+</html>

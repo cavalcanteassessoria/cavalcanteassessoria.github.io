@@ -1,0 +1,284 @@
+---
+import { Image } from 'astro:assets';
+import { nav, services, site } from '../data/site';
+import { ui } from './ui-copy';
+import Icon, { type IconName } from './Icon.astro';
+import servicesImage from '../assets/img/servicos-01.png';
+import periciaImage from '../assets/img/pericia-lupa.png';
+
+const label = nav.find((item) => item.href === '#servicos')?.label ?? '';
+const iconFor: Record<(typeof services)[number]['id'], IconName> = {
+  pericia: 'pericia',
+  assistencia: 'assistencia',
+  consultoria: 'consultoria',
+  calculos: 'calculos',
+  contratos: 'contratos',
+  trabalhista: 'trabalhista',
+};
+---
+
+<section id="servicos" class="services surface-dark grain" aria-labelledby="servicos-title">
+  <div class="container">
+    <h2 id="servicos-title" class="folio">
+      <span class="folio__num" aria-hidden="true">§ 02</span>
+      <span>{label}</span>
+    </h2>
+
+    <div class="services__head">
+      <p class="services__intro reveal">{site.description}</p>
+      <figure class="services__figure reveal">
+        <Image
+          src={servicesImage}
+          alt={ui.servicesImageAlt}
+          widths={[480, 800, 1200, 1600]}
+          sizes="(min-width: 64em) 52vw, 100vw"
+          class="services__img"
+        />
+      </figure>
+    </div>
+
+    <ol class="ledger" role="list">
+      {
+        services.map((service, index) => (
+          <li class:list={['ledger__item', 'reveal', { 'ledger__item--feature': index === 0 }]}>
+            <div class="ledger__meta">
+              <span class="ledger__num" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <Icon name={iconFor[service.id]} class="ledger__icon" />
+            </div>
+            <div class="ledger__content">
+              <h3 class="ledger__title">{service.title}</h3>
+              <p class="ledger__body">{service.body}</p>
+            </div>
+            {index === 0 && (
+              <Image
+                src={periciaImage}
+                alt={ui.periciaImageAlt}
+                width={343}
+                class="ledger__thumb"
+              />
+            )}
+          </li>
+        ))
+      }
+      <li class="ledger__item ledger__item--cta reveal">
+        <h3 class="ledger__title">{ui.servicesExtraTitle}</h3>
+        <p class="ledger__body">{ui.servicesExtraBody}</p>
+        <a class="ledger__link" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+          {ui.whatsappCta}
+          <span class="visually-hidden">{ui.newTab}</span>
+          <Icon name="arrow" class="icon--arrow" />
+        </a>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding-block: var(--section-y);
+    background:
+      radial-gradient(ellipse 60% 50% at 100% 0%, rgb(180 129 107 / 0.1), transparent 70%),
+      var(--ink);
+  }
+
+  .services__head {
+    display: grid;
+    gap: 2.5rem;
+    margin-bottom: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .services__intro {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
+    line-height: 1.18;
+    color: var(--text-dark);
+  }
+
+  .services__figure {
+    position: relative;
+  }
+
+  .services__img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: 30% 60%;
+    filter: saturate(0.9);
+  }
+
+  .services__figure::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1rem;
+    height: 1px;
+    background: var(--bronze);
+    transform-origin: left;
+  }
+
+  .ledger {
+    display: grid;
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .ledger__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2.25rem 0;
+    border-bottom: 1px solid var(--line-dark-soft);
+    transition: background-color 0.5s var(--ease);
+  }
+
+  .ledger__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--bronze);
+  }
+
+  .ledger__num {
+    font-family: var(--serif);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  .ledger__meta :global(.ledger__icon) {
+    width: 2.25rem;
+    height: 2.25rem;
+    transition: transform 0.6s var(--ease);
+  }
+
+  .ledger__title {
+    font-size: clamp(1.55rem, 1.35rem + 0.6vw, 1.85rem);
+    line-height: 1.12;
+    color: var(--text-dark);
+  }
+
+  .ledger__body {
+    margin-top: 0.9rem;
+    font-size: 0.95rem;
+    color: var(--muted-dark);
+  }
+
+  .ledger__item :global(.ledger__thumb) {
+    width: 100%;
+    max-width: 22rem;
+    height: auto;
+    aspect-ratio: 343 / 147;
+    object-fit: cover;
+    filter: grayscale(0.35) sepia(0.25) contrast(1.05);
+    border: 1px solid var(--line-dark);
+  }
+
+  .ledger__item--cta {
+    justify-content: flex-end;
+  }
+
+  .ledger__item--cta .ledger__title {
+    color: var(--bronze);
+  }
+
+  .ledger__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-dark);
+  }
+
+  .ledger__link :global(.icon) {
+    color: var(--bronze);
+    transition: transform 0.35s var(--ease);
+  }
+
+  .ledger__link:hover :global(.icon) {
+    transform: translateX(5px);
+  }
+
+  .ledger__link:hover {
+    color: var(--bronze);
+  }
+
+  @media (hover: hover) {
+    .ledger__item:not(.ledger__item--cta):hover {
+      background: rgb(180 129 107 / 0.05);
+    }
+
+    .ledger__item:hover :global(.ledger__icon) {
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (min-width: 48em) {
+    .ledger {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-left: 1px solid var(--line-dark-soft);
+    }
+
+    .ledger__item {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--line-dark-soft);
+    }
+
+    .ledger__item--feature {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      grid-template-areas:
+        'meta thumb'
+        'content thumb';
+      column-gap: 2.5rem;
+      align-items: start;
+    }
+
+    .ledger__item--feature .ledger__meta {
+      grid-area: meta;
+    }
+
+    .ledger__item--feature .ledger__content {
+      grid-area: content;
+    }
+
+    .ledger__item--feature :global(.ledger__thumb) {
+      grid-area: thumb;
+      align-self: end;
+      justify-self: end;
+    }
+
+    .ledger__item--feature .ledger__title {
+      font-size: clamp(1.9rem, 1.4rem + 1.2vw, 2.5rem);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .services__head {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: end;
+      gap: 4rem;
+    }
+
+    .services__intro {
+      padding-bottom: 1rem;
+    }
+  }
+
+  @media (min-width: 75em) {
+    .ledger {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .ledger__item {
+      min-height: 22rem;
+    }
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import { nav, site } from '../data/site';
+import { ui } from './ui-copy';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <Logo class="footer__logo" />
+        <p class="footer__name">{site.name}</p>
+        <p class="footer__tagline">{site.tagline}</p>
+      </div>
+
+      <nav class="footer__nav" aria-label={ui.navFooter}>
+        <ul role="list">
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <ul class="footer__social" role="list">
+        <li>
+          <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" aria-label={`${ui.whatsappShort} ${ui.newTab}`}>
+            <Icon name="whatsapp" />
+          </a>
+        </li>
+        <li>
+          <a href={site.instagram.url} target="_blank" rel="noopener noreferrer" aria-label={`${ui.contactInstagram} ${site.instagram.handle} ${ui.newTab}`}>
+            <Icon name="instagram" />
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`} aria-label={`${ui.contactEmail}: ${site.email}`}>
+            <Icon name="mail" />
+          </a>
+        </li>
+        <li>
+          <a href={`tel:${site.phone.tel}`} aria-label={`${ui.contactPhone}: ${site.phone.display}`}>
+            <Icon name="phone" />
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer__bottom">
+      <p>
+        © {year} {site.name}. {ui.rights}
+      </p>
+      <p>{site.location}</p>
+      <a class="footer__top-link" href="#inicio">
+        {ui.backToTop}
+        <Icon name="arrow-up" />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: clamp(3.5rem, 7vw, 5.5rem) 2rem;
+    background: var(--black);
+    color: var(--text-dark);
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .footer__top {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--line-dark-soft);
+  }
+
+  .footer__brand :global(.footer__logo) {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .footer__name {
+    margin-top: 1.25rem;
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+
+  .footer__tagline {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    color: var(--muted-dark);
+  }
+
+  .footer__nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+  }
+
+  .footer__nav a {
+    display: inline-block;
+    padding-block: 0.35rem;
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted-dark);
+    transition: color 0.3s var(--ease);
+  }
+
+  .footer__nav a:hover {
+    color: var(--bronze);
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .footer__social a {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border: 1px solid var(--line-dark);
+    color: var(--bronze);
+    transition:
+      background-color 0.3s var(--ease),
+      color 0.3s var(--ease);
+  }
+
+  .footer__social a:hover {
+    background: var(--bronze);
+    color: var(--black);
+  }
+
+  .footer__social :global(.icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 2rem;
+    padding-top: 1.75rem;
+    font-size: 0.8rem;
+    color: var(--muted-dark);
+  }
+
+  .footer__top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--bronze);
+  }
+
+  .footer__top-link :global(.icon) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (min-width: 64em) {
+    .footer__top {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) auto;
+      align-items: end;
+    }
+
+    .footer__nav ul {
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,184 @@
+---
+import { nav, testimonials } from '../data/site';
+
+const label = nav.find((item) => item.href === '#depoimentos')?.label ?? '';
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .filter((part) => part.length > 2)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join('');
+---
+
+<section id="depoimentos" class="testimonials surface-light" aria-labelledby="depoimentos-title">
+  <div class="container">
+    <h2 id="depoimentos-title" class="folio">
+      <span class="folio__num" aria-hidden="true">§ 03</span>
+      <span>{label}</span>
+    </h2>
+
+    <ul class="quotes" role="list">
+      {
+        testimonials.map((item, index) => (
+          <li class:list={['quote', 'reveal', { 'quote--lead': index === 0 }]}>
+            <figure>
+              {index === 0 && (
+                <span class="quote__mark" aria-hidden="true">
+                  “
+                </span>
+              )}
+              <blockquote class="quote__text">
+                <p>{item.quote}</p>
+              </blockquote>
+              <figcaption class="quote__by">
+                <span class="quote__initials" aria-hidden="true">
+                  {initials(item.author)}
+                </span>
+                <span class="quote__who">
+                  <span class="quote__name">{item.author}</span>
+                  <span class="quote__role">{item.role}</span>
+                </span>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding-block: var(--section-y);
+    background: var(--paper-2);
+  }
+
+  .quotes {
+    display: grid;
+    gap: 3.5rem;
+  }
+
+  .quote + .quote {
+    padding-top: 3.5rem;
+    border-top: 1px solid var(--line-light);
+  }
+
+  .quote figure {
+    position: relative;
+  }
+
+  .quote__mark {
+    display: block;
+    height: 0.5em;
+    margin-bottom: 0.5rem;
+    font-family: var(--serif);
+    font-size: clamp(7rem, 5rem + 8vw, 12rem);
+    line-height: 0.85;
+    color: var(--bronze);
+  }
+
+  .quote__text p {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+    line-height: 1.32;
+    color: var(--text-light);
+  }
+
+  .quote--lead .quote__text p {
+    font-size: clamp(1.7rem, 1.25rem + 2vw, 2.75rem);
+    line-height: 1.16;
+  }
+
+  .quote__by {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .quote__initials {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    flex: none;
+    border: 1px solid var(--bronze);
+    border-radius: 50%;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    color: var(--bronze-ink);
+  }
+
+  .quote__who {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+
+  .quote__name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-light);
+  }
+
+  .quote__role {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bronze-ink);
+  }
+
+  @media (min-width: 48em) and (max-width: 63.99em) {
+    .quotes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 3rem;
+    }
+
+    .quote--lead {
+      grid-column: span 2;
+    }
+
+    .quote + .quote + .quote {
+      padding-left: 3rem;
+      border-left: 1px solid var(--line-light);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .quotes {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: auto auto;
+      column-gap: clamp(4rem, 7vw, 7rem);
+      row-gap: 3rem;
+    }
+
+    .quote--lead {
+      grid-row: span 2;
+      padding-right: 1rem;
+    }
+
+    .quote + .quote {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .quote:nth-child(2) {
+      align-self: end;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--line-light);
+    }
+
+    .quote:nth-child(2),
+    .quote:nth-child(3) {
+      padding-left: clamp(2rem, 4vw, 3.5rem);
+      border-left: 1px solid var(--bronze);
+    }
+
+    .quote:nth-child(3) {
+      align-self: start;
+    }
+  }
+</style>

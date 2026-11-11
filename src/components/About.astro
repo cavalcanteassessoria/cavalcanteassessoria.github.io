@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import { about, differentiators, nav } from '../data/site';
+import { ui } from './ui-copy';
+import aboutImage from '../assets/img/perfil.jpg';
+
+const label = nav.find((item) => item.href === '#sobre')?.label ?? '';
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+---
+
+<section id="sobre" class="about surface-light" aria-labelledby="sobre-title">
+  <div class="container">
+    <h2 id="sobre-title" class="folio">
+      <span class="folio__num" aria-hidden="true">§ 01</span>
+      <span>{label}</span>
+    </h2>
+
+    <div class="about__grid">
+      <p class="about__lead reveal">{about.lead}</p>
+
+      <figure class="about__figure reveal">
+        <Image
+          src={aboutImage}
+          alt={ui.aboutImageAlt}
+          widths={[400, 640, 900, 1200]}
+          sizes="(min-width: 64em) 38vw, (min-width: 48em) 60vw, 100vw"
+          class="about__img"
+        />
+      </figure>
+
+      <div class="about__text">
+        <div class="about__block reveal">
+          <h3 class="eyebrow about__label">{ui.missionTitle}</h3>
+          <p class="about__mission">{about.mission}</p>
+        </div>
+
+        <div class="about__block reveal">
+          <h3 class="eyebrow about__label">{ui.credentialsTitle}</h3>
+          <ul class="chips" role="list">
+            {about.credentials.map((item) => <li class="chip">{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="diff">
+      <h3 class="eyebrow about__label diff__title">{ui.differentiatorsTitle}</h3>
+      <ol class="diff__list" role="list">
+        {
+          differentiators.map((item, index) => (
+            <li class="diff__item reveal">
+              <span class="diff__num" aria-hidden="true">
+                {roman[index]}
+              </span>
+              <span class="diff__text">{item}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding-block: var(--section-y);
+  }
+
+  .about__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .about__lead {
+    font-family: var(--serif);
+    font-size: clamp(1.65rem, 1.2rem + 2vw, 2.85rem);
+    line-height: 1.18;
+    letter-spacing: -0.005em;
+    color: var(--text-light);
+  }
+
+  .about__lead::first-line {
+    color: var(--bronze-ink);
+  }
+
+  .about__figure {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .about__figure::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 1.25rem -1.25rem -1.25rem 1.25rem;
+    border: 1px solid var(--bronze);
+  }
+
+  .about__img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 12%;
+    filter: saturate(0.85) contrast(1.02);
+  }
+
+  .about__text {
+    display: grid;
+    gap: 2.75rem;
+  }
+
+  .about__label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.1rem;
+    color: var(--bronze-ink);
+  }
+
+  .about__label::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    border: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .about__mission {
+    color: var(--muted-light);
+    max-width: 62ch;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .chip {
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--line-light);
+    background: var(--white);
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text-light);
+    transition: border-color 0.3s var(--ease);
+  }
+
+  .chip:hover {
+    border-color: var(--bronze);
+  }
+
+  .diff {
+    margin-top: clamp(4.5rem, 10vw, 8rem);
+  }
+
+  .diff__title {
+    margin-bottom: 2rem;
+  }
+
+  .diff__list {
+    display: grid;
+    border-top: 1px solid var(--text-light);
+  }
+
+  .diff__item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line-light);
+  }
+
+  .diff__num {
+    flex: none;
+    width: 2.5rem;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--bronze-ink);
+  }
+
+  .diff__text {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+    line-height: 1.2;
+    color: var(--text-light);
+  }
+
+  @media (min-width: 48em) {
+    .about__figure {
+      width: 78%;
+    }
+
+    .diff__list {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2.5rem;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .about__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 2rem;
+      row-gap: 4.5rem;
+    }
+
+    .about__lead {
+      grid-column: 1 / span 10;
+    }
+
+    .about__figure {
+      grid-column: 1 / span 5;
+      width: auto;
+      align-self: start;
+    }
+
+    .about__img {
+      aspect-ratio: 4 / 5;
+    }
+
+    .about__text {
+      grid-column: 7 / span 6;
+      align-self: center;
+    }
+
+    .diff__list {
+      grid-template-columns: repeat(5, 1fr);
+      column-gap: 0;
+      border-top: 0;
+    }
+
+    .diff__item {
+      flex-direction: column;
+      gap: 2.5rem;
+      padding: 1.75rem 1.5rem 0 0;
+      border-bottom: 0;
+      border-top: 1px solid var(--text-light);
+      min-height: 13rem;
+    }
+
+    .diff__item + .diff__item {
+      padding-left: 1.5rem;
+      border-left: 1px solid var(--line-light);
+    }
+
+    .diff__num {
+      width: auto;
+      font-size: 2.6rem;
+      line-height: 1;
+    }
+  }
+</style>

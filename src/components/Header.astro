@@ -1,0 +1,362 @@
+---
+import { nav, site } from '../data/site';
+import { ui } from './ui-copy';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const brandRest = site.name.replace(site.shortName, '').trim();
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href="#inicio" aria-label={`${site.name} — ${nav[0].label}`}>
+      <Logo class="brand__mark" />
+      <span class="brand__text">
+        <span class="brand__name">{site.shortName}</span>
+        <span class="brand__sub">{brandRest}</span>
+      </span>
+    </a>
+
+    <nav class="nav-desktop" aria-label={ui.navMain}>
+      <ul role="list">
+        {
+          nav.slice(1).map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="header-cta" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+      <Icon name="whatsapp" />
+      <span>{ui.whatsappShort}</span>
+      <span class="visually-hidden">{ui.newTab}</span>
+    </a>
+
+    <button class="menu-toggle" type="button" popovertarget="menu-mobile" aria-label={ui.menuOpen}>
+      <Icon name="menu" />
+    </button>
+  </div>
+
+  <nav id="menu-mobile" class="nav-mobile" popover aria-label={ui.navMobile}>
+    <div class="nav-mobile__top">
+      <span class="eyebrow">{site.name}</span>
+      <button
+        class="menu-toggle menu-toggle--close"
+        type="button"
+        popovertarget="menu-mobile"
+        popovertargetaction="hide"
+        aria-label={ui.menuClose}
+      >
+        <Icon name="close" />
+      </button>
+    </div>
+    <ol class="nav-mobile__list" role="list">
+      {
+        nav.map((item, index) => (
+          <li style={`--i:${index}`}>
+            <a href={item.href}>
+              <span class="nav-mobile__num" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="nav-mobile__foot">
+      <a class="btn" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+        <Icon name="whatsapp" />
+        {ui.whatsappCta}
+        <span class="visually-hidden">{ui.newTab}</span>
+      </a>
+      <a class="nav-mobile__phone" href={`tel:${site.phone.tel}`}>{site.phone.display}</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const menu = document.getElementById('menu-mobile');
+  menu?.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => menu.hidePopover());
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    background: rgb(11 10 9 / 0.86);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--line-dark-soft);
+    color: var(--text-dark);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 100%;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-right: auto;
+    text-decoration: none;
+  }
+
+  .brand :global(.brand__mark) {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .brand__name {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .brand__sub {
+    margin-top: 0.3rem;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-desktop ul {
+    display: flex;
+    gap: clamp(1.5rem, 2.6vw, 2.75rem);
+  }
+
+  .nav-desktop a {
+    position: relative;
+    padding-block: 0.5rem;
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted-dark);
+    transition: color 0.3s var(--ease);
+  }
+
+  .nav-desktop a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--bronze);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease);
+  }
+
+  .nav-desktop a:hover,
+  .nav-desktop a:focus-visible {
+    color: var(--text-dark);
+  }
+
+  .nav-desktop a:hover::after,
+  .nav-desktop a:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .header-cta {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--line-dark);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--bronze);
+    transition:
+      background-color 0.3s var(--ease),
+      color 0.3s var(--ease);
+  }
+
+  .header-cta :global(.icon) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .header-cta:hover {
+    background: var(--bronze);
+    color: var(--black);
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-right: -0.75rem;
+    border: 0;
+    background: none;
+    color: var(--text-dark);
+    cursor: pointer;
+  }
+
+  .menu-toggle :global(.icon) {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .nav-mobile {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 var(--gutter) 2rem;
+    border: 0;
+    background:
+      linear-gradient(90deg, transparent calc(var(--gutter) + 2.5rem), var(--line-dark) 0, var(--line-dark) calc(var(--gutter) + 2.5rem + 1px), transparent 0),
+      var(--ink);
+    color: var(--text-dark);
+    overflow-y: auto;
+  }
+
+  .nav-mobile:popover-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-mobile__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    color: var(--bronze);
+    background: var(--ink);
+  }
+
+  .nav-mobile__list {
+    margin-block: auto;
+    padding-block: 2rem;
+  }
+
+  .nav-mobile__list a {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding-block: 0.6rem;
+    font-family: var(--serif);
+    font-size: clamp(2.25rem, 9vw, 3rem);
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  .nav-mobile__num {
+    width: 1.75rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--bronze);
+  }
+
+  .nav-mobile__foot {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line-dark-soft);
+    background: var(--ink);
+  }
+
+  .nav-mobile__phone {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: var(--bronze-soft);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-mobile {
+      opacity: 0;
+      transform: translateY(-1rem);
+      transition:
+        opacity 0.4s var(--ease),
+        transform 0.4s var(--ease),
+        overlay 0.4s allow-discrete,
+        display 0.4s allow-discrete;
+    }
+
+    .nav-mobile:popover-open {
+      opacity: 1;
+      transform: none;
+    }
+
+    @starting-style {
+      .nav-mobile:popover-open {
+        opacity: 0;
+        transform: translateY(-1rem);
+      }
+    }
+
+    .nav-mobile:popover-open li {
+      animation: menu-item 0.6s var(--ease) both;
+      animation-delay: calc(0.08s + var(--i) * 0.05s);
+    }
+  }
+
+  @keyframes menu-item {
+    from {
+      opacity: 0;
+      transform: translateX(-1rem);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .nav-desktop {
+      display: block;
+    }
+
+    .header-cta {
+      display: inline-flex;
+    }
+
+    .menu-toggle:not(.menu-toggle--close) {
+      display: none;
+    }
+
+    .nav-mobile {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 48em) and (max-width: 63.99em) {
+    .header-cta {
+      display: inline-flex;
+    }
+  }
+</style>

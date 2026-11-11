@@ -1,0 +1,23 @@
+{
+  "name": "cavalcante-assessoria-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Site institucional da Cavalcante Assessoria Jurídica",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@fontsource/abhaya-libre": "^5.3.0",
+    "@fontsource/libre-franklin": "^5.3.0",
+    "astro": "^7.4.10"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/sitemap": "^3.7.4",
+    "typescript": "^5.9.2"
+  }
+}
